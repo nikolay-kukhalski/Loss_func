@@ -1,7 +1,7 @@
-__all__ = ["keras_loss"]
+__all__ = ["logger"]
 def name():
-  return "Keras model loss & metrics graf"
+  return "Logger metric"
 def description():
-  return "Построение графиков обучения моделей в keras"
+  return "Registration of training metrics"
 def version():
   return "Version 0.1"
