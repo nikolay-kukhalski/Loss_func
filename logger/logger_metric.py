@@ -1,8 +1,15 @@
 import csv
 
+from abc import ABC, abstractmethod
 from typing import List 
 
-class CSVLogger:
+class Logger(ABC):
+    
+    @abstractmethod
+    def log(self):
+        pass
+
+class CSVLogger(Logger):
     
     def __init__(self, file_path: str, metric_key: List[str]):
         self._file_path = file_path 
@@ -21,7 +28,7 @@ class CSVLogger:
         with open(self._file_path, 'w', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self._fieldnames)
             writer.writeheader()
-
+        
     def log(self, metric_value: List[float], step: int):
 
         if not isinstance(metric_value, list):
