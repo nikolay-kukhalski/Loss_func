@@ -1,16 +1,11 @@
 import csv
 
 from abc import ABC, abstractmethod
+from tensorflow.keras.callbacks import Callback
+from tensorflow import summary
 from typing import List 
 
 class Logger(ABC):
-    
-    @abstractmethod
-    def log(self):
-        pass
-
-class CSVLogger(Logger):
-    
     def __init__(self, file_path: str, metric_key: List[str]):
         self._file_path = file_path 
         self._metric_key = metric_key
@@ -28,6 +23,13 @@ class CSVLogger(Logger):
         with open(self._file_path, 'w', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self._fieldnames)
             writer.writeheader()
+    
+    @abstractmethod
+    def log(self, metric_value: List[float], step: int):
+        pass
+
+class CSVLogger(Logger):
+ 
         
     def log(self, metric_value: List[float], step: int):
 
@@ -44,4 +46,30 @@ class CSVLogger(Logger):
         with open(self._file_path, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self._fieldnames)
             writer.writerow(dict_1)
+
+
+class LoggerFile(Logger, Callback):
+
+    def on_epoch_end(self, epoch, logs=None):
+
+        fieldnames = ['epoch'] + list(logs.keys())
         
+        if epoch==0:
+            with open(self._file_path, 'w', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+        
+        dict_1 = logs
+        dict_1['epoch'] = epoch + 1 
+        
+        with open(self._file_path, 'a', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writerow(dict_1)       
+
+        test_summary_writer = summary.create_file_writer('Log')
+        for k,v in logs.items():
+            with test_summary_writer.as_default():
+                summary.scalar(k, v, epoch)
+
+    def log(self):
+        pass
