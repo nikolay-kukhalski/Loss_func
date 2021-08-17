@@ -48,12 +48,17 @@ class CSVLogger(Logger):
             writer.writerow(dict_1)
 
 
-class LoggerFile(Logger, Callback):
+class Call_back(Callback):
+
+    def __init__(self, file_path: str):
+        self._file_path = file_path
+
 
     def on_epoch_end(self, epoch, logs=None):
 
         fieldnames = ['epoch'] + list(logs.keys())
         
+
         if epoch==0:
             with open(self._file_path, 'w', newline='') as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -62,14 +67,18 @@ class LoggerFile(Logger, Callback):
         dict_1 = logs
         dict_1['epoch'] = epoch + 1 
         
+
         with open(self._file_path, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writerow(dict_1)       
+            writer.writerow(dict_1)
 
         test_summary_writer = summary.create_file_writer('Log')
         for k,v in logs.items():
             with test_summary_writer.as_default():
                 summary.scalar(k, v, epoch)
 
+class LoggerFile(Logger):
+
     def log(self):
-        pass
+        file_path = self._file_path
+        return Call_back(file_path)
