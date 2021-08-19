@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 setup(name='logger',
  
       version='0.1',
-      
-      author='Andrey Popov and Nikolay Kukhalski',
+
+      author='Andrei Papou and Nikolay Kukhalski',
 
       author_email='kng_by@mail.ru',
  
