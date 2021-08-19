@@ -16,6 +16,10 @@ setup(name='logger',
  
       packages=find_packages(),
 
-      install_requires= ['tensorboard>=2.0.0'],
+      extras_require={
+        'TB': ['tensorboard>=2.4.0'], 'TF': ['tensorflow>=2.4.0'] 
+    }
+
+      #install_requires= ['tensorboard>=2.0.0'],
 
       python_requires='>=3.8')
