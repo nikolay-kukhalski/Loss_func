@@ -1,7 +1,7 @@
 import csv
+import importlib
 
 from abc import ABC, abstractmethod
-from tensorflow import summary
 from typing import List
 
 class Logger(ABC):
@@ -82,7 +82,9 @@ class TBLogger(Logger):
         row = {self._metric_key_list[i]: metric_value_list[i] for i in range(len(self._metric_key_list))}
         row[self._STEP_KEY] = step
         
-        test_summary_writer = summary.create_file_writer(self._dir_path)
+        module_summary = importlib.import_module("tensorboard.summary")
+        writer = module_summary.Writer(self._dir_path)
         for k,v in row.items():
-            with test_summary_writer.as_default():
-                summary.scalar(k, v, step)
+            writer.add_scalar(k, v, step)
+        writer.close()
+ 
