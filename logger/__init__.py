@@ -1,4 +1,4 @@
-__all__ = ["logger"]
+__all__ = ["logger_metric/logger"]
 def name():
   return "Logger metric"
 def description():

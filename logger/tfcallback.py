@@ -2,7 +2,7 @@ from typing import Optional, Dict
 
 from tensorflow.keras.callbacks import Callback
 
-from logger.logger import Logger
+from logger_metric.logger.logger import Logger
 
 
 class LoggerCallback(Callback):
