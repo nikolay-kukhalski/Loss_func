@@ -1,5 +1,16 @@
 from setuptools import setup, find_packages
 
+with open("requirements/logger.txt", "r") as f_logger:
+	logger_txt = f_logger.readlines()
+logger_txt = [line.rstrip('\n') for line in logger_txt]
+
+
+with open("requirements/tf.txt", "r") as f_tf:
+	tf_txt = f_tf.readlines()
+tf_txt = [line.rstrip('\n') for line in tf_txt]
+
+
+
 setup(name='logger',
  
       version='0.1',
@@ -16,9 +27,7 @@ setup(name='logger',
  
       packages=find_packages(),
 
-      extras_require={
-        'TB': ['tensorboard>=2.4.0'], 'TF': ['tensorflow>=2.4.0'] 
-    }
+      extras_require={'TB': logger_txt, 'TF': tf_txt},
 
       #install_requires= ['tensorboard>=2.0.0'],
 
